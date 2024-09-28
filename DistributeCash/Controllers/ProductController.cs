@@ -1,4 +1,5 @@
 ﻿using DistributedCash.Data;
+using DistributedCash.Helper;
 using DistributedCash.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,11 +19,12 @@ public class ProductController(IOptions<AppSetings> apsettings) : ControllerBase
     public IActionResult GetProducts()
     {
         ProductList productList = new ProductList();
-        var sdfs= _appSetings;
+        //var apps= _appSetings;
 
-        var configuration = ConfigurationOptions.Parse("127.0.0.1:6379");
-        var redisConnection = ConnectionMultiplexer.Connect(configuration);
-        var existingValue = redisConnection.GetDatabase();
+        //var redisConnection = ConnectionMultiplexer.Connect(apps.RedisUrl);
+        //var existingValue = redisConnection.GetDatabase();
+
+        var existingValue = CashConnection.Connection.GetDatabase();
 
         List<Product> pro = new List<Product>();
 
@@ -33,11 +35,10 @@ public class ProductController(IOptions<AppSetings> apsettings) : ControllerBase
         {
             pro = productList.products();
             existingValue.StringSet(cacheKey, JsonSerializer.Serialize(pro), TimeSpan.FromMinutes(10));
-
         }
         else
         {
-            pro = JsonSerializer.Deserialize<List<Product>>((cachedData));
+            pro = JsonSerializer.Deserialize<List<Product>>(cachedData);
         }
         
         return Ok(pro);

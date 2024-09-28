@@ -1,10 +1,10 @@
 using DistributedCash.Model;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var appSettings = builder.Configuration.GetSection("AppSetings").Get<AppSetings>();
-ConfigureServices(builder.Services, builder.Configuration, appSettings);
+builder.Services.Configure<AppSetings>(builder.Configuration.GetSection("AppSetings"));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -28,10 +28,3 @@ app.MapControllers();
 
 app.Run();
 
-void ConfigureServices(IServiceCollection services, IConfiguration configuration, AppSetings appSettings)
-{
-    //if (appSettings.IsValid())
-    //{
-        services.Configure<AppSetings>(configuration.GetSection("AppSetings"));
-    //}
-}
