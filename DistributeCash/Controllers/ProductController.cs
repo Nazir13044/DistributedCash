@@ -20,7 +20,6 @@ public class ProductController(IOptions<AppSetings> apsettings) : ControllerBase
     {
         ProductList productList = new ProductList();
 
-
         var cash = CacheConnection.Connection;
         var existingValue = cash.GetDatabase();       
 
