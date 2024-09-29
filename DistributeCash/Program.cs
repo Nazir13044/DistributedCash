@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.Configure<AppSetings>(builder.Configuration.GetSection("AppSetings"));
+//builder.Services.Configure<AppSetings>(builder.Configuration.GetSection("AppSetings"));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

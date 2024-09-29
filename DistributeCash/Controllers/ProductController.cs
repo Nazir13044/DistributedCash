@@ -19,12 +19,10 @@ public class ProductController(IOptions<AppSetings> apsettings) : ControllerBase
     public IActionResult GetProducts()
     {
         ProductList productList = new ProductList();
-        //var apps= _appSetings;
 
-        //var redisConnection = ConnectionMultiplexer.Connect(apps.RedisUrl);
-        //var existingValue = redisConnection.GetDatabase();
 
-        var existingValue = CashConnection.Connection.GetDatabase();
+        var cash = CacheConnection.Connection;
+        var existingValue = cash.GetDatabase();       
 
         List<Product> pro = new List<Product>();
 
