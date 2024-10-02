@@ -1,4 +1,5 @@
-﻿using DistributedCash.Data;
+﻿using DistributedCash.CashService;
+using DistributedCash.Data;
 using DistributedCash.Helper;
 using DistributedCash.Model;
 using Microsoft.AspNetCore.Http;
@@ -11,9 +12,11 @@ namespace DistributedCash.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ProductController(IOptions<AppSetings> apsettings) : ControllerBase
+public class ProductController(IOptions<AppSetings> apsettings, ICashService cashServices) : ControllerBase
 {
     private readonly AppSetings _appSetings = apsettings.Value;
+    private readonly ICashService _cashService = cashServices;
+    private readonly DateTimeOffset _options = Helper.Helper.CreateCacheOptions();
 
     [HttpGet]
     public IActionResult GetProducts()
@@ -26,17 +29,15 @@ public class ProductController(IOptions<AppSetings> apsettings) : ControllerBase
         List<Product> pro = new List<Product>();
 
         var cacheKey = "unique-cache-key";
-        
-        string cachedData = existingValue.StringGet(cacheKey);
-        if (cachedData == null)
+        string cachedData = string.Empty;
+
+
+        if (_cashService.TryGetValue(key: cacheKey, value : out cachedData) ==false)
         {
             pro = productList.products();
-            existingValue.StringSet(cacheKey, JsonSerializer.Serialize(pro), TimeSpan.FromMinutes(10));
+            _cashService.Set(cacheKey, JsonSerializer.Serialize(pro), options : _options);
         }
-        else
-        {
-            pro = JsonSerializer.Deserialize<List<Product>>(cachedData);
-        }
+        pro = JsonSerializer.Deserialize<List<Product>>(cachedData);
         
         return Ok(pro);
     }
