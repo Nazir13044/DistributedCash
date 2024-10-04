@@ -23,9 +23,6 @@ public class ProductController(IOptions<AppSetings> apsettings, ICashService cas
     {
         ProductList productList = new ProductList();
 
-        var cash = CacheConnection.Connection;
-        var existingValue = cash.GetDatabase();       
-
         List<Product> pro = new List<Product>();
 
         var cacheKey = "unique-cache-key";

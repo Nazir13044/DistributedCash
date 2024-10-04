@@ -14,7 +14,7 @@ public interface ICashService : IEnumerable<KeyValuePair<string, object>>
     bool Set<T>(string key, T value, DateTimeOffset options);
     void Clear(string pattern);
 }
-public class CahsService : ICashService
+public class CashService : ICashService
 {
     private readonly IDatabase _db;
     private readonly IServer _server;
@@ -22,7 +22,7 @@ public class CahsService : ICashService
     private readonly IMemoryCache _memoryCache;
     private readonly ConcurrentDictionary<string, ICacheEntry> _cacheEntries = new();
 
-    public CahsService(IMemoryCache memoryCache)
+    public CashService(IMemoryCache memoryCache)
     {
         _redisCacheEnbled = CacheConnection.RedisCacheEnbled;
         if (_redisCacheEnbled)

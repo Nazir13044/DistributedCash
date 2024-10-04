@@ -16,7 +16,7 @@ internal static class CacheConfiguration
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            RedUrl = configuration.GetSection("AppSetings").Get<AppSetings>().RedisUrl;
+            RedUrl = configuration.GetSection("AppSetings").Get<AppSetings>()?.RedisUrl;
         }
         catch (FileNotFoundException e)
         {

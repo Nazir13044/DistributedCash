@@ -2,5 +2,5 @@
 
 public class AppSetings
 {
-    public string RedisUrl { get; set; }
+    public string RedisUrl { get; set; } = string.Empty;
 }
