@@ -34,7 +34,8 @@ public class ProductController(IOptions<AppSetings> apsettings, ICashService cas
             pro = productList.products();
             _cashService.Set(cacheKey, JsonSerializer.Serialize(pro), options : _options);
         }
-        pro = JsonSerializer.Deserialize<List<Product>>(cachedData);
+        if (!string.IsNullOrEmpty(cachedData))
+            pro = JsonSerializer.Deserialize<List<Product>>(cachedData);
         
         return Ok(pro);
     }
